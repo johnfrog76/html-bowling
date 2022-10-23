@@ -7,7 +7,20 @@
 Using the two in conjunction is one of the fastest ways to build a web app.
 
 ### Getting Started
-- Hit run
-- Edit [App.tsx](#src/App.tsx) and watch it live update!
+# npm run dev
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
+# HTML Bowling App
+SPA - bowling scorecard
+
+View at https://replit.com/@JohnWebster/html-bowling
+or https://johnfrog76.github.io/html-bowling/
+
+### Github pages - publish workflow
+* Main branch is used for gh pages deploy (do not use it)
+* development branch is default branch
+* From default branch pull latest changes you want to deploy
+* run build script
+* run deploy script
+
+### Note: publish workflow is seperate from branch management
+* build and dev scripts are unique to Vite https://vitejs.dev/
