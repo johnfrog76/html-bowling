@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build --base=./",
     "preview": "vite preview",
-    "deploy": "gh-pages -b main -d dist",
+    "deploy": "gh-pages -b master -d dist",
     "test": "jest"
   },
   "keywords": [],
