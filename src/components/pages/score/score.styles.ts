@@ -4,7 +4,7 @@ export const StyledH2 = styled.h2`
   color: ${(props) => props.theme.colors.pageLinkColor1};
   font-weight: 400;
   font-size: ${(props) => props.theme.fontSizes.large};
-  margin: 0 0 0.75em 0;
+  margin: 0 ;
 `;
 
 export const StyledMain = styled.main`
@@ -16,7 +16,9 @@ export const StyledMain = styled.main`
 
 export const StyledThemeWrap = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0 2rem 0;
   button {
     min-width: auto;
     padding: 0;

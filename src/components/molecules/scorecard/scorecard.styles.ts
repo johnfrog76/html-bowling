@@ -31,9 +31,25 @@ export const StyledCard = styled.div`
 export const CardInner = styled.div`
   display: flex;
   margin-bottom: 1rem;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.colors.navBarBackground};
+    border-radius: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${(props) => props.theme.colors.pageBackground2};
+    border-radius: 0;
+  }
+
 `;
 
-  
 export const StyledTotal = styled.div`
   display: flex;
   flex-direction: column;
