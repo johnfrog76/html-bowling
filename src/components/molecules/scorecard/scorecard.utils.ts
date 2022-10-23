@@ -10,7 +10,7 @@ export class Player {
   rollCount = 0;
   runningScore = 0;
   frameScore = 0;
-  prevFrame = null;
+  prevFrame: frameType = null;
   isLastFrame = false;
   gameOver = false;
 
@@ -67,6 +67,7 @@ export class Player {
 
 
     // set ref to prevFrame
+  
     this.prevFrame = this.frameList[this.frameIndex - 1] ?
       this.frameList[this.frameIndex - 1] : null;
 
@@ -91,6 +92,7 @@ export class Player {
         // correct score for spare in prevFrame
         this.runningScore = this.runningScore + numPins;
         debugger;
+        //@ts-ignore
         this.frameList[this.frameIndex - 1].frameScore += numPins;
         frameObj.frameScore = this.runningScore;
       }
@@ -101,21 +103,22 @@ export class Player {
         rolls: [numPins]
       };
     } else {
-      let temp = this.frameList[this.frameIndex];
-      let tempArr = temp.rolls.slice(0);
+      let temp: (frameType | null) = this.frameList[this.frameIndex];
+      let tempArr = temp ? temp.rolls.slice(0) : [];
       let frameTotal = tempArr[tempArr.length - 1] + numPins;
+      let myIdx = this.frameIndex - 1;
 
-      if (this.prevFrame && this.prevFrame.isStrike) {
+      if (myIdx && this.prevFrame && this.prevFrame?.isStrike) {
         // need to keep checking until
-        let myIdx = this.frameIndex - 1;
         let myPrevFrame = this.frameList[myIdx];
         let myStrikeBonus = frameTotal;
         let count = 0;
         while (myPrevFrame && myPrevFrame.isStrike) {
           debugger;
           this.runningScore += myStrikeBonus;
-          
+          //@ts-ignore
           this.frameList[myIdx].frameScore += myStrikeBonus;
+          //@ts-ignore
           this.frameList[this.frameIndex].frameScore += myStrikeBonus;
           myStrikeBonus = count == 0 ? 
               tempArr[0] + 10 : 20; 
@@ -126,20 +129,21 @@ export class Player {
         }
       }
 
-      if (frameTotal === 10) {
-        // set flag for spare
-        temp.isSpare = true;
-        temp.showScore = false;        
-      } else {
-        temp.isSpare = false;
-      }
-
- 
-      tempArr.push(numPins);
-      this.frameList[this.frameIndex] = {
-        ...temp,
-        frameScore: temp.frameScore + numPins,
-        rolls: tempArr
+      if (temp) {
+        if (frameTotal === 10) {
+          // set flag for spare
+          temp.isSpare = true;
+          temp.showScore = false;        
+        } else {
+          temp.isSpare = false;
+        }
+        
+        tempArr.push(numPins);
+        this.frameList[this.frameIndex] = {
+          ...temp,
+          frameScore: temp.frameScore + numPins,
+          rolls: tempArr
+        }
       }
     }
 
@@ -152,18 +156,19 @@ export class Player {
     if (this.isLastFrame) {
 
       const tenthFrame = this.frameList[this.frameIndex];
-      
-      let tenthFrameCount = 0;
-
-      tenthFrame.rolls.forEach(item => {
-        tenthFrameCount += item;
-      });
-      
-      if (tenthFrame.rolls.length === 3) {
-        this.gameOver = true;
-      } else if (tenthFrame.rolls.length === 2 && 
-            !tenthFrame.isSpare && !tenthFrame.isStrike) {
-        this.gameOver = true; 
+      if (tenthFrame) {
+        let tenthFrameCount = 0;
+  
+        tenthFrame.rolls.forEach(item => {
+          tenthFrameCount += item;
+        });
+        
+        if (tenthFrame.rolls.length === 3) {
+          this.gameOver = true;
+        } else if (tenthFrame.rolls.length === 2 && 
+              !tenthFrame.isSpare && !tenthFrame.isStrike) {
+          this.gameOver = true; 
+        }
       }
     }
   }

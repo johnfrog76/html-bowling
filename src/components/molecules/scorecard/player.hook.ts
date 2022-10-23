@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Player } from './scorecard.utils';
-import { iPlayer } from '../../models/models';
+import { iPlayer } from '../../../models/models';
 
-let myPlayer = {};
+let myPlayer= {};
 let defaultPlayer = {
     name: '',
     frameIndex: 0,
@@ -20,7 +20,10 @@ export const usePlayerHook = () => {
   const [player, setPlayer] = useState<iPlayer>(defaultPlayer);
 
   const initPlayer = (playerName: string) => {
+
+    //@ts-ignore
     myPlayer = new Player(playerName);
+    //@ts-ignore
     setPlayer(myPlayer)
   }
 
@@ -29,11 +32,14 @@ export const usePlayerHook = () => {
     myPlayer = {};
   }
 
-  const makeRoll = (num: number) => {
+  const makeRoll = (num: number):void => {
+    //@ts-ignore
     myPlayer.roll(num);
+    
+    //@ts-ignore
     setPlayer({
       ...myPlayer
-    })
+    });
   }
 
   return { 
