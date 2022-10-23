@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
-
 export const StyledWrapper = styled.div`
   display: flex;
-  
+  justify-content: center;
   gap: 0.25rem;
   width: 100%;
   margin: 1.5rem 0;  
+`;
+  
+export const StyledInputWrap = styled.div`
 `;
 
 export const StyledInput = styled.input`

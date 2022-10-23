@@ -1,9 +1,19 @@
 import styled from 'styled-components';
 
 export const StyledH4 = styled.h4`
+  display: flex;
+  align-items: center;
   color: ${(props) => props.theme.colors.pageLinkColor1};
   font-size: ${(props) => props.theme.fontSizes.medium};
   font-weight: 400;
+  .game-over {
+    background-color: ${props => props.theme.colors.pageToastSuccess};
+    color: #fff;
+    font-size: 1rem;
+    display: inline-block;
+    padding: .25rem;
+    margin-left: 1rem;
+  }
 `;
 
 export const StyledToolbar = styled.div`

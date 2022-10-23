@@ -1,14 +1,14 @@
-import {FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 
-import {StyledWrapper, StyledInput } from './sign-up.styles';
+import { StyledWrapper, StyledInput, StyledInputWrap } from './sign-up.styles';
 
 type Props = {
   handleSignup: (name: string) => void;
 }
 
-const SignUpComponent:FC<Props> = ({handleSignup}) => {
+const SignUpComponent: FC<Props> = ({ handleSignup }) => {
   const [name, setName] = useState('');
-  
+
   const onSignUp = () => {
     if (name.length > 0) {
       handleSignup(name);
@@ -16,13 +16,19 @@ const SignUpComponent:FC<Props> = ({handleSignup}) => {
       handleSignup('player 1')
     }
     setName('');
-  } 
-  
+  }
+  const enterKye = (evt: any) => {
+    if (evt?.key === "Enter") {
+      onSignUp();
+    }
+  }
+
+
   return (
     <StyledWrapper>
-      <div>
-        <StyledInput type="text" placeholder="Ex: Fred" onChange={(evt) => setName(evt.currentTarget.value)} value={name} />
-      </div>
+      <StyledInputWrap>
+        <StyledInput type="text" placeholder="Ex: Fred Flintstone" onKeyPress={(evt) => enterKye(evt)} onChange={(evt) => setName(evt.currentTarget.value)} value={name} />
+      </StyledInputWrap>
       <button onClick={() => onSignUp()}>Go</button>
     </StyledWrapper>
   )
