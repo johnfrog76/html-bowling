@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledInner = styled.div`
   border: 1px solid ${(props) => props.theme.colors.pageForeground1};
+  border-right: none;
   display: flex;
   min-height: 126px;
   flex: 1;
