@@ -34,8 +34,8 @@ export const CardInner = styled.div`
   overflow-x: auto;
 
   &::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
+    height: 0.5rem;
+    width: 0.5rem;
   }
 
   &::-webkit-scrollbar-thumb {
