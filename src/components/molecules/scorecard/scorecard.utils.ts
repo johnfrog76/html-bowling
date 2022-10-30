@@ -66,6 +66,7 @@ export class Player {
             runningScore += (this.computeFrameTotal(f.rolls) + nextOneTotal);
             return {
               ...f,
+              showScore: f.rolls.length % 2 === 0,
               frameScore: runningScore
             }
           }
@@ -83,6 +84,7 @@ export class Player {
         runningScore += this.computeFrameTotal(f.rolls);
         return {
           ...f,
+          showScore: f.rolls.length % 2 === 0,
           frameScore: runningScore
         }
       }
@@ -120,6 +122,7 @@ export class Player {
       runningScore += subTotal;
       return {
         ...f,
+        showScore: true,
         frameScore: runningScore
       };
     })
@@ -165,7 +168,7 @@ export class Player {
         rolls: [],
         isSpare: false,
         isStrike: false,
-        showScore: true,
+        showScore: false,
         frameScore: this.runningScore
       };
       

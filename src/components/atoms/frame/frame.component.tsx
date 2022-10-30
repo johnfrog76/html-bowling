@@ -81,7 +81,7 @@ const FrameComponent: FC<Props> = ({ frame, id }) => {
                     </>
                   )}
               </StyledRolls>
-              <StyledFrameScore>{frame?.frameScore}</StyledFrameScore>
+              <StyledFrameScore>{frame?.showScore && frame?.frameScore}</StyledFrameScore>
             </StyledFrameWrap>
           </StyledInner>
         )
