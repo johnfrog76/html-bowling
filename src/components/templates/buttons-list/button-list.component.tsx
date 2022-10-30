@@ -45,8 +45,7 @@ const ButtonList: FC<Props> = ({ currentFrame, handleClick }) => {
           <StyledButton
             type="button"
             disabled={isDisabled}
-            onClick={() => handleClick(id)}
-            key={id}
+            onClick={() => handleClick(id)} key={id}
           >{id}</StyledButton>
         ))
       }

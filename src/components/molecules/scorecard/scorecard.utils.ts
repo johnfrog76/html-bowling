@@ -35,7 +35,100 @@ export class Player {
     }
   }
 
+  computeFrameTotal(rolls: number[], limit = 2) {
+    let sum = 0;
+    let copy = rolls.slice(0);
+    if (limit === 2 && rolls.length === 3) {
+      copy.pop();
+    }
+    for (let i = 0; i < copy.length; i++) {
+      sum += copy[i];
+    }
+    return sum;
+  }
+
+  computeScore() {
+    let runningScore = 0;
+    this.frameList = this.frameList.map((f, idx, list) => {
+      if (f === null) {
+        return null;
+      }
+
+      if (idx !== 9) {
+        if (f.isSpare) {
+          let count = 0
+          let nextOneTotal = 0;
+          let nextIdx = idx + 1;
+          let nextFrame = list[nextIdx];
+  
+          if (nextFrame) {
+            nextOneTotal = nextFrame.rolls[0];
+            runningScore += (this.computeFrameTotal(f.rolls) + nextOneTotal);
+            return {
+              ...f,
+              frameScore: runningScore
+            }
+          }
+        }
+      }
+      
+      let count = 0;
+      let nextTwoTotal = 0;
+      let allowedRoles = f.rolls.length === 3 ? 3 : 2;
+      let nextIdx = idx + 1;
+      let nextFrame = list[nextIdx];
+      let subTotal = 0;
+      
+      if (!f.isStrike && !f.isSpare && allowedRoles === 2) {
+        runningScore += this.computeFrameTotal(f.rolls);
+        return {
+          ...f,
+          frameScore: runningScore
+        }
+      }
+
+      while (count < allowedRoles && allowedRoles === 3) {
+        const len = f.rolls.length;
+        count += len;
+        nextTwoTotal += this.computeFrameTotal(f.rolls, 3);
+      }
+
+      while (count < allowedRoles && nextFrame) {
+        const len = nextFrame.rolls.length;
+        if (count === 0) {
+          count += len;
+          nextTwoTotal += this.computeFrameTotal(nextFrame.rolls);
+        } else {
+          count ++;
+          nextTwoTotal += nextFrame.rolls[0];
+        }
+
+        nextIdx++;
+        nextFrame = list[nextIdx];
+      }
+
+
+      if (count < 2) {
+        return f;
+      }
+      
+      if (nextTwoTotal === 30 || f.rolls.length === 3) {
+        subTotal = nextTwoTotal;
+      } else {
+        subTotal = (10 + nextTwoTotal);
+      }
+      runningScore += subTotal;
+      return {
+        ...f,
+        frameScore: runningScore
+      };
+    })
+
+    this.runningScore = runningScore;
+  }
+
   roll(numPins: number) {
+
     if (numPins > 10 || numPins < 0) {
       const error = new Error('pins out of range');
       throw error;
@@ -49,7 +142,7 @@ export class Player {
       this.frameNumber = 10;
       this.isLastFrame = true;
     } else {
-      this.frameNumber += this.rollCount % 2;      
+      this.frameNumber += this.rollCount % 2;
     }
     
     this.frameIndex = this.frameNumber - 1;
@@ -61,13 +154,8 @@ export class Player {
         this.frameIndex
       );
       return;
-      // const error = new Error('game over');
-      // throw error;
     }
 
-
-    // set ref to prevFrame
-  
     this.prevFrame = this.frameList[this.frameIndex - 1] ?
       this.frameList[this.frameIndex - 1] : null;
 
@@ -88,16 +176,6 @@ export class Player {
         frameObj.showScore = false;
       }
 
-      if (this.prevFrame && this.prevFrame.isSpare) {
-        // correct score for spare in prevFrame
-        this.runningScore = this.runningScore + numPins;
-        debugger;
-        //@ts-ignore
-        this.frameList[this.frameIndex - 1].frameScore += numPins;
-        frameObj.frameScore = this.runningScore;
-      }
-
-
       this.frameList[this.frameIndex] = {
         ...frameObj,
         rolls: [numPins]
@@ -106,34 +184,12 @@ export class Player {
       let temp: (frameType | null) = this.frameList[this.frameIndex];
       let tempArr = temp ? temp.rolls.slice(0) : [];
       let frameTotal = tempArr[tempArr.length - 1] + numPins;
-      let myIdx = this.frameIndex - 1;
-
-      if (myIdx && this.prevFrame && this.prevFrame?.isStrike) {
-        // need to keep checking until
-        let myPrevFrame = this.frameList[myIdx];
-        let myStrikeBonus = frameTotal;
-        let count = 0;
-        while (myPrevFrame && myPrevFrame.isStrike) {
-          debugger;
-          this.runningScore += myStrikeBonus;
-          //@ts-ignore
-          this.frameList[myIdx].frameScore += myStrikeBonus;
-          //@ts-ignore
-          this.frameList[this.frameIndex].frameScore += myStrikeBonus;
-          myStrikeBonus = count == 0 ? 
-              tempArr[0] + 10 : 20; 
-            
-          myIdx--;
-          myPrevFrame = this.frameList[myIdx] || null
-          count++;
-        }
-      }
 
       if (temp) {
         if (frameTotal === 10) {
           // set flag for spare
           temp.isSpare = true;
-          temp.showScore = false;        
+          temp.showScore = false;
         } else {
           temp.isSpare = false;
         }
@@ -147,14 +203,7 @@ export class Player {
       }
     }
 
-    // console.log('line 135', this.frameList);
-    // 10th frame can run before return?
-    // The tenth frame up to three rolls.
-    // if strike then the player will roll two more times.
-    // if the second roll is a strike or spare 
-    // then the player will roll a third time. 
     if (this.isLastFrame) {
-
       const tenthFrame = this.frameList[this.frameIndex];
       if (tenthFrame) {
         let tenthFrameCount = 0;
@@ -171,6 +220,8 @@ export class Player {
         }
       }
     }
+
+    this.computeScore();
   }
 
 }
