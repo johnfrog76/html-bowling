@@ -11,7 +11,7 @@ export const StyledH4 = styled.h4`
     color: #fff;
     font-size: 1rem;
     display: inline-block;
-    padding: .25rem;
+    padding: .25rem 1rem;
     margin-left: 1rem;
   }
 `;
@@ -34,8 +34,8 @@ export const CardInner = styled.div`
   overflow-x: auto;
 
   &::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
+    height: 0.5rem;
+    width: 0.5rem;
   }
 
   &::-webkit-scrollbar-thumb {

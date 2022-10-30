@@ -2,28 +2,25 @@ import { useState, useEffect } from "react";
 import { Player } from './scorecard.utils';
 import { iPlayer } from '../../../models/models';
 
-let myPlayer= {};
+let myPlayer: (Player | {}) = {};
 let defaultPlayer = {
-    name: '',
-    frameIndex: 0,
-    frameList: [],
-    frameNumber: 0,
-    rollCount: 0,
-    runningScore:0,
-    frameScore: 0,
-    prevFrame: null,
-    isLastFrame: false,
-    gameOver: false
+  name: '',
+  frameIndex: 0,
+  frameList: [],
+  frameNumber: 0,
+  rollCount: 0,
+  runningScore:0,
+  frameScore: 0,
+  prevFrame: null,
+  isLastFrame: false,
+  gameOver: false
 }
 
 export const usePlayerHook = () => {
-  const [player, setPlayer] = useState<iPlayer>(defaultPlayer);
+  const [player, setPlayer] = useState<iPlayer | {}>(defaultPlayer);
 
   const initPlayer = (playerName: string) => {
-
-    //@ts-ignore
     myPlayer = new Player(playerName);
-    //@ts-ignore
     setPlayer(myPlayer)
   }
 
@@ -33,13 +30,13 @@ export const usePlayerHook = () => {
   }
 
   const makeRoll = (num: number):void => {
-    //@ts-ignore
-    myPlayer.roll(num);
-    
-    //@ts-ignore
-    setPlayer({
-      ...myPlayer
-    });
+    if (myPlayer.hasOwnProperty('name')) {
+      // @ts-ignore
+      myPlayer.roll(num);
+      setPlayer({
+        ...myPlayer
+      });
+    }
   }
 
   return { 

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledInner = styled.div`
   border: 1px solid ${(props) => props.theme.colors.pageForeground1};
+  border-right: none;
   display: flex;
   min-height: 126px;
   flex: 1;
@@ -41,4 +42,5 @@ export const StyledRolls = styled.div`
 export const StyledFrameScore = styled.div`
   padding: 0.75rem;
   text-align:center;
+  min-height: 3rem;
 `;
