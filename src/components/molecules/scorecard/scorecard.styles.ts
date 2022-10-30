@@ -11,7 +11,7 @@ export const StyledH4 = styled.h4`
     color: #fff;
     font-size: 1rem;
     display: inline-block;
-    padding: .25rem;
+    padding: .25rem 1rem;
     margin-left: 1rem;
   }
 `;

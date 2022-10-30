@@ -42,4 +42,5 @@ export const StyledRolls = styled.div`
 export const StyledFrameScore = styled.div`
   padding: 0.75rem;
   text-align:center;
+  min-height: 3rem;
 `;
